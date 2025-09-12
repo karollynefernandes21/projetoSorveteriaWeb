@@ -3,7 +3,6 @@ package dao;
 // Imports
 import beans.Fornecedores;
 import beans.Sorvetes;
-import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +12,10 @@ import java.util.ArrayList;
 public class SorvetesDao {
 
     // Atributo para conexão
-    private final Conexao conexao;
+    private final Connection conn;
 
-    public SorvetesDao(Conexao conexao) {
-        this.conexao = conexao;
+    public SorvetesDao(Connection conn) {
+        this.conn = conn;
     }
 
     // Método para cadastrar sorvetes
@@ -24,7 +23,7 @@ public class SorvetesDao {
         String sql = "INSERT INTO sorvetes (sabor_sorvete, descricao, categoria, unidade, quantidade, preco, data_entrada, data_validade, fornecedores_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, sorvete.getSaborSorvete());
             ps.setString(2, sorvete.getDescricao());
@@ -50,7 +49,7 @@ public class SorvetesDao {
 
         String sql = "SELECT * FROM sorvetes WHERE sabor_sorvete LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + sabor + "%");
             ResultSet rs = ps.executeQuery();
@@ -72,7 +71,7 @@ public class SorvetesDao {
         String sql = "UPDATE sorvetes SET sabor_sorvete = ?, descricao = ?, categoria = ?, unidade = ?, quantidade = ?, "
                 + "preco = ?, fornecedores_id = ? WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, sorvete.getSaborSorvete());
             ps.setString(2, sorvete.getDescricao());
@@ -95,7 +94,7 @@ public class SorvetesDao {
 
         String sql = "DELETE FROM sorvetes WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, sorvete.getId());
             ps.executeUpdate();
@@ -110,7 +109,7 @@ public class SorvetesDao {
         ArrayList<Sorvetes> listagem = new ArrayList<>();
         String sql = "SELECT * FROM sorvetes";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
 
             // Adicionando sorvetes na lista
@@ -129,7 +128,7 @@ public class SorvetesDao {
         ArrayList<Sorvetes> listagem = new ArrayList<>();
         String sql = "SELECT * FROM sorvetes WHERE sabor_sorvete LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + sabor + "%");
 
@@ -151,7 +150,7 @@ public class SorvetesDao {
     private Sorvetes criarSorvete(ResultSet rs) throws SQLException {
 
         Sorvetes sorvete = new Sorvetes();
-        FornecedoresDao fornecedoresDao = new FornecedoresDao();
+        FornecedoresDao fornecedoresDao = new FornecedoresDao(conn);
 
         sorvete.setId(rs.getInt("id"));
         sorvete.setSaborSorvete(rs.getString("sabor_sorvete"));

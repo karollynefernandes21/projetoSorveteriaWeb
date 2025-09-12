@@ -2,7 +2,6 @@ package dao;
 
 // Imports
 import beans.Fornecedores;
-import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +11,10 @@ import java.util.ArrayList;
 public class FornecedoresDao {
 
     // Atributo para conexão
-    private Conexao conexao;
+    private Connection conn;
 
-    public FornecedoresDao(Conexao conexao) {
-        this.conexao = conexao;
+    public FornecedoresDao(Connection conn) {
+        this.conn = conn;
     }
     
     public FornecedoresDao(){}
@@ -26,7 +25,7 @@ public class FornecedoresDao {
         String sql = "INSERT INTO fornecedores (nome, cnpj, email, celular, cep, endereco, numero, bairro, cidade, complemento, unidade) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, fornecedor.getNome());
             ps.setString(2, fornecedor.getCnpj());
@@ -52,7 +51,7 @@ public class FornecedoresDao {
 
         String sql = "SELECT * FROM fornecedores WHERE nome LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
             ResultSet rs = ps.executeQuery();
@@ -72,7 +71,7 @@ public class FornecedoresDao {
         String sql = "UPDATE fornecedores SET nome = ?, cnpj = ?, email = ?, celular = ?, cep = ?, endereco = ?, "
                 + "numero = ?, bairro = ?, cidade = ?, complemento = ?, unidade = ? WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, fornecedor.getNome());
             ps.setString(2, fornecedor.getCnpj());
@@ -99,7 +98,7 @@ public class FornecedoresDao {
 
         String sql = "DELETE FROM fornecedores WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, fornecedor.getId());
             ps.executeUpdate();
@@ -115,7 +114,7 @@ public class FornecedoresDao {
         ArrayList<Fornecedores> listagem = new ArrayList<>();
         String sql = "SELECT * FROM fornecedores";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
 
@@ -135,7 +134,7 @@ public class FornecedoresDao {
         ArrayList<Fornecedores> listagem = new ArrayList<>();
         String sql = "SELECT * FROM fornecedores WHERE nome LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
 
@@ -157,7 +156,7 @@ public class FornecedoresDao {
     public Fornecedores buscarFornecedorPorId(int id) {
         String sql = "SELECT * FROM fornecedores WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

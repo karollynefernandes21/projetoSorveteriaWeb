@@ -2,7 +2,6 @@ package dao;
 
 // Imports
 import beans.Clientes;
-import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +11,10 @@ import java.util.ArrayList;
 public class ClientesDao {
 
     // Atributo para conexão
-    private final Conexao conexao;
+    private final Connection conn;
 
-    public ClientesDao(Conexao conexao) {
-        this.conexao = conexao;
+    public ClientesDao(Connection conn) {
+        this.conn = conn;
     }
 
     // Método para cadastrar clientes
@@ -24,7 +23,7 @@ public class ClientesDao {
         String sql = "INSERT INTO clientes (nome, cpf, email, celular, cep, endereco, numero, bairro, cidade, complemento, unidade) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getCpf());
@@ -50,7 +49,7 @@ public class ClientesDao {
 
         String sql = "SELECT * FROM clientes WHERE nome LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
             ResultSet rs = ps.executeQuery();
@@ -70,7 +69,7 @@ public class ClientesDao {
         String sql = "UPDATE clientes SET nome = ?, cpf = ?, email = ?, celular = ?, cep = ?, endereco = ?, "
                 + "numero = ?, bairro = ?, cidade = ?, complemento = ?, unidade = ? WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getCpf());
@@ -97,7 +96,7 @@ public class ClientesDao {
 
         String sql = "DELETE FROM clientes WHERE id = ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, cliente.getId());
             ps.executeUpdate();
@@ -113,7 +112,7 @@ public class ClientesDao {
         ArrayList<Clientes> listagem = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
 
@@ -133,7 +132,7 @@ public class ClientesDao {
         ArrayList<Clientes> listagem = new ArrayList<>();
         String sql = "SELECT * FROM clientes WHERE nome LIKE ?";
 
-        try (Connection conn = this.conexao.connectDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
 
