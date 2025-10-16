@@ -1,5 +1,5 @@
 
-package beans;
+package model;
 
 import java.time.LocalDate;
 
@@ -9,13 +9,12 @@ public class Sorvetes {
     private String saborSorvete, descricao, categoria, unidade;
     private int quantidade;
     private double preco;
-    private Fornecedores fornecedor;
     private LocalDate dataEntrada, dataValidade;
 
     public Sorvetes() {
     }
 
-    public Sorvetes(int id, String saborSorvete, String descricao, String categoria, String unidade, int quantidade, double preco, Fornecedores fornecedor, LocalDate dataEntrada, LocalDate dataValidade) {
+    public Sorvetes(int id, String saborSorvete, String descricao, String categoria, String unidade, int quantidade, double preco, LocalDate dataEntrada, LocalDate dataValidade) {
         this.id = id;
         this.saborSorvete = saborSorvete;
         this.descricao = descricao;
@@ -23,7 +22,6 @@ public class Sorvetes {
         this.unidade = unidade;
         this.quantidade = quantidade;
         this.preco = preco;
-        this.fornecedor = fornecedor;
         this.dataEntrada = dataEntrada;
         this.dataValidade = dataValidade;
     }
@@ -84,14 +82,6 @@ public class Sorvetes {
         this.preco = preco;
     }
 
-    public Fornecedores getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(Fornecedores fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
     public LocalDate getDataEntrada() {
         return dataEntrada;
     }
@@ -110,6 +100,6 @@ public class Sorvetes {
 
     @Override
     public String toString() {
-        return "Sorvetes{" + "id=" + id + ", saborSorvete=" + saborSorvete + ", descricao=" + descricao + ", categoria=" + categoria + ", unidade=" + unidade + ", quantidade=" + quantidade + ", preco=" + preco + ", fornecedor=" + fornecedor + ", dataEntrada=" + dataEntrada + ", dataValidade=" + dataValidade + '}';
+        return "Sorvetes{" + "id=" + id + ", saborSorvete=" + saborSorvete + ", descricao=" + descricao + ", categoria=" + categoria + ", unidade=" + unidade + ", quantidade=" + quantidade + ", preco=" + preco + ", dataEntrada=" + dataEntrada + ", dataValidade=" + dataValidade + '}';
     }
 }

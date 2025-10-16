@@ -1,5 +1,5 @@
 
-package beans;
+package model;
 
 public class Funcionarios {
     
